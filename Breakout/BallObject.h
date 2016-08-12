@@ -8,7 +8,7 @@ public:
 	~BallObject();
 
 	virtual sf::CircleShape GetBall() { return m_BallShape; }
-	//void UpdatePosition(sf::Time& deltaTime);
+	void UpdatePosition(sf::Time& deltaTime);
 
 
 private:

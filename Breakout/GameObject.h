@@ -8,11 +8,8 @@ public:
 	virtual sf::Text GetText() { return m_Text; }
 	virtual sf::RectangleShape GetRectangle() {	return m_Shape;}
 	virtual sf::CircleShape GetBall() { return m_BallShape; }
-	virtual void UpdatePosition(sf::Time& deltaTime) 
-	{
-		m_Velocity += m_NewVelocity;
-		m_BallShape.move(m_Velocity * deltaTime.asSeconds());
-	}
+	//tried using just the one update position for ball and paddle here. wouldnt work
+	virtual void UpdatePosition(sf::Time& deltaTime) {}
 	
 protected:
 	sf::Vector2f m_NewVelocity;

@@ -16,8 +16,8 @@ BallObject::~BallObject()
 {
 }
 
-//void BallObject::UpdatePosition(sf::Time& deltaTime)
-//{
-//	m_Velocity += m_NewVelocity;
-//	m_BallShape.move(m_Velocity * deltaTime.asSeconds());
-//}
+void BallObject::UpdatePosition(sf::Time& deltaTime)
+{
+	m_Velocity += m_NewVelocity;
+	m_BallShape.move(m_Velocity * deltaTime.asSeconds());
+}
