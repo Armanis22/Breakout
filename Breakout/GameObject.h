@@ -10,6 +10,7 @@ public:
 	virtual sf::CircleShape GetBall() { return m_BallShape; }
 	//tried using just the one update position for ball and paddle here. wouldnt work
 	virtual void UpdatePosition(sf::Time& deltaTime) {}
+	virtual void UpdatePosition(sf::Vector2i mousePos) {}
 	
 protected:
 	sf::Vector2f m_NewVelocity;

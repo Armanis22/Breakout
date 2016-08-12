@@ -8,6 +8,7 @@
 int main()
 {
 	sf::RenderWindow window(sf::VideoMode(1200, 750), "Breakout!");
+	window.setMouseCursorVisible(false);
 
 	Game myGame;
 	while (window.isOpen())

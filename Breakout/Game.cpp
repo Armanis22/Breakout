@@ -31,7 +31,7 @@ void Game::CreateText()
 
 void Game::CreateBall()
 {
-	std::shared_ptr<BallObject> _tempBall(new BallObject(sf::Vector2f(600, 630), 10.f, sf::Color::White));
+	std::shared_ptr<BallObject> _tempBall(new BallObject(sf::Vector2f(600, 630), 10.f, sf::Color::Red));
 	m_GameObjectVector.push_back(_tempBall);
 }
 
@@ -69,10 +69,10 @@ void Game::Update(sf::RenderWindow &window)
 			window.close();
 	}
 	InputHandler(window);
-	for (int iter = 2; iter < 4; iter++)
-	{
-		m_GameObjectVector[iter]->UpdatePosition(m_DeltaTime);
-	}
+	
+	m_GameObjectVector[2]->UpdatePosition(m_DeltaTime);
+	m_GameObjectVector[3]->UpdatePosition(localMouse);
+
 }
 
 void Game::InputHandler(sf::RenderWindow &window)
@@ -81,6 +81,7 @@ void Game::InputHandler(sf::RenderWindow &window)
 	{
 		window.close();
 	}
+	localMouse = GetMousePosition(window);
 	switch (m_GameState)
 	{
 	case GameState::STARTMENU:
@@ -120,6 +121,16 @@ void Game::Draw(sf::RenderWindow &window)
 		break;
 	}
 	window.display();
+}
+
+sf::Vector2i Game::GetMousePosition(sf::RenderWindow & window)
+{
+	sf::Vector2i _windowBorderOffset = sf::Vector2i(8, 32);
+	sf::Vector2i _globalMousePos = sf::Mouse::getPosition();
+	_globalMousePos -= window.getPosition();
+	_globalMousePos -= _windowBorderOffset;
+	return _globalMousePos;
+
 }
 
 

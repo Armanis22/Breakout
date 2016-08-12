@@ -7,7 +7,7 @@ public:
 	PaddleObject(sf::Vector2f pos, sf::Vector2f size, sf::Color color);
 	~PaddleObject();
 
-	void UpdatePosition(sf::Time& deltaTime);
+	void UpdatePosition(sf::Vector2i mousePos);
 	sf::RectangleShape GetRectangle() { return m_Shape; }
 
 

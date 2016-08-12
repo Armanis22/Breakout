@@ -22,6 +22,9 @@ public:
 	void Update(sf::RenderWindow &window);
 	void Draw(sf::RenderWindow &window);
 
+	//needed for pointer to window passing
+	sf::Vector2i GetMousePosition(sf::RenderWindow& window);
+
 
 private:
 	void InputHandler(sf::RenderWindow &window);
@@ -29,6 +32,7 @@ private:
 
 	sf::Time m_DeltaTime;
 	sf::Clock m_Clock;
+	sf::Vector2i localMouse;
 
 	enum class GameState {
 		STARTMENU,
