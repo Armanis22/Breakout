@@ -54,7 +54,7 @@ void Game::CreateArena()
 
 void Game::CreatePaddle()
 {
-	std::shared_ptr<PaddleObject> _tempPaddle(new PaddleObject(sf::Vector2f(600,650), sf::Vector2f(80,10),sf::Color::White));
+	std::shared_ptr<PaddleObject> _tempPaddle(new PaddleObject(sf::Vector2f(600,650), sf::Vector2f(140,12),sf::Color::White));
 	m_GameObjectVector.push_back(_tempPaddle);
 
 }
@@ -69,9 +69,23 @@ void Game::Update(sf::RenderWindow &window)
 			window.close();
 	}
 	InputHandler(window);
-	
-	m_GameObjectVector[2]->UpdatePosition(m_DeltaTime);
-	m_GameObjectVector[3]->UpdatePosition(localMouse);
+	switch (m_GameState)
+	{
+	case Game::GameState::STARTMENU:
+		break;
+	case Game::GameState::PLAYING:
+		m_GameObjectVector[2]->UpdatePosition(m_DeltaTime);
+		m_GameObjectVector[3]->UpdatePosition(localMouse);
+		break;
+	case Game::GameState::ENDLEVEL:
+		break;
+	case Game::GameState::GAMEOVER:
+		break;
+	default:
+		break;
+	}
+
+
 
 }
 
@@ -92,7 +106,8 @@ void Game::InputHandler(sf::RenderWindow &window)
 		break;
 	case GameState::ENDLEVEL:
 		break;
-
+	case GameState::GAMEOVER:
+		break;
 	default:
 		break;
 	}

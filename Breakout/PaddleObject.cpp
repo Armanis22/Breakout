@@ -19,10 +19,10 @@ void PaddleObject::UpdatePosition(sf::Vector2i mousePos)
 {
 	mousePos.y = m_Shape.getPosition().y;
 	m_Shape.setPosition(static_cast<sf::Vector2f>(mousePos));
-	if (m_Shape.getPosition().x < 60)
-		m_Shape.setPosition(60, mousePos.y);
-	if (m_Shape.getPosition().x > 1140)
-		m_Shape.setPosition(1140, mousePos.y);
+	if (m_Shape.getPosition().x < 90)
+		m_Shape.setPosition(90, mousePos.y);
+	if (m_Shape.getPosition().x > 1110)
+		m_Shape.setPosition(1110, mousePos.y);
 }
 
 
