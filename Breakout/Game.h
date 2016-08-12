@@ -3,6 +3,11 @@
 #include <vector>
 #include <memory>
 #include "GameObject.h"
+#include "TextObject.h"
+#include "ArenaBlockObject.h"
+#include "PaddleObject.h"
+#include "BallObject.h"
+#include <string>
 
 class Game
 {
@@ -11,7 +16,9 @@ public:
 	void Init();
 	~Game();
 	void CreateText();
+	void CreateBall();
 	void CreateArena();
+	void CreatePaddle();
 	void Update(sf::RenderWindow &window);
 	void Draw(sf::RenderWindow &window);
 

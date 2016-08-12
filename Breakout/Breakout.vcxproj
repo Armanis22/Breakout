@@ -156,15 +156,20 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArenaBlockObject.h" />
+    <ClInclude Include="BallObject.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
+    <ClInclude Include="PaddleObject.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="targetver.h" />
     <ClInclude Include="TextObject.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ArenaBlockObject.cpp" />
+    <ClCompile Include="BallObject.cpp" />
     <ClCompile Include="Game.cpp" />
+    <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="PaddleObject.cpp" />
     <ClCompile Include="SFMLTemplate.cpp" />
     <ClCompile Include="stdafx.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

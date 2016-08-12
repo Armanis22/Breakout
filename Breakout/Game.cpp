@@ -1,9 +1,7 @@
 #include "stdafx.h"
 #include "Game.h"
 #include "GameObject.h"
-#include "TextObject.h"
-#include "ArenaBlockObject.h"
-#include <string>
+
 Game::Game()
 {
 	Init();
@@ -14,6 +12,8 @@ void Game::Init()
 	GameState m_GameState = GameState::STARTMENU;
 
 	CreateText();
+	CreateBall();
+	CreatePaddle();
 	CreateArena();
 }
 
@@ -27,6 +27,12 @@ void Game::CreateText()
 	m_GameObjectVector.push_back(_tempText);
 	_tempText.reset(new TextObject("Press Spacebar to continue\n  Escape to exit anytime", sf::Color::Green, sf::Vector2f(175, 500), 60));
 	m_GameObjectVector.push_back(_tempText);
+}
+
+void Game::CreateBall()
+{
+	std::shared_ptr<BallObject> _tempBall(new BallObject(sf::Vector2f(600, 630), 10.f, sf::Color::White));
+	m_GameObjectVector.push_back(_tempBall);
 }
 
 void Game::CreateArena()
@@ -46,6 +52,12 @@ void Game::CreateArena()
 	}
 }
 
+void Game::CreatePaddle()
+{
+	std::shared_ptr<PaddleObject> _tempPaddle(new PaddleObject(sf::Vector2f(600,650), sf::Vector2f(80,10),sf::Color::White));
+	m_GameObjectVector.push_back(_tempPaddle);
+
+}
 
 void Game::Update(sf::RenderWindow &window)
 {
@@ -57,6 +69,10 @@ void Game::Update(sf::RenderWindow &window)
 			window.close();
 	}
 	InputHandler(window);
+	for (int iter = 2; iter < 4; iter++)
+	{
+		m_GameObjectVector[iter]->UpdatePosition(m_DeltaTime);
+	}
 }
 
 void Game::InputHandler(sf::RenderWindow &window)
@@ -90,7 +106,8 @@ void Game::Draw(sf::RenderWindow &window)
 		window.draw(m_GameObjectVector[1]->GetText());
 		break;
 	case GameState::PLAYING:
-		for (int iter = 2; iter < 5; iter++)
+		window.draw(m_GameObjectVector[2]->GetBall());
+		for (int iter = 3; iter < 7; iter++)
 		{
 			window.draw(m_GameObjectVector[iter]->GetRectangle());
 		}

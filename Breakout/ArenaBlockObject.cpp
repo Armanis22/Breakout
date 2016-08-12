@@ -7,6 +7,7 @@ ArenaBlockObject::ArenaBlockObject(sf::Vector2f size, sf::Vector2f pos, sf::Colo
 	m_Shape.setPosition(pos);
 	m_Shape.setSize(size);
 	m_Shape.setFillColor(color);
+
 }
 
 
