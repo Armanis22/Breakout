@@ -30,7 +30,7 @@ void Game::CreateText()
 
 void Game::CreateBall()
 {
-	std::shared_ptr<BallObject> _tempBall(new BallObject(sf::Vector2f(600, 630), 10.f, sf::Color::Red));
+	std::shared_ptr<BallObject> _tempBall(new BallObject(sf::Vector2f(600, 620), 10.f, sf::Color::Red));
 	m_GameObjectVector.push_back(_tempBall);
 }
 
@@ -39,9 +39,9 @@ void Game::CreateArena()
 	sf::Vector2f vecArray[5];
 	vecArray[0] = sf::Vector2f(20, WINDOWHEIGHT);  //vertical size
 	vecArray[1] = sf::Vector2f(WINDOWWIDTH, 20);  //horizontal size		  
-	vecArray[2] = sf::Vector2f(10, WINDOWHEIGHT/2); // left 
-	vecArray[3] = sf::Vector2f(WINDOWWIDTH/2, 10); // top start locations
-	vecArray[4] = sf::Vector2f(WINDOWWIDTH-10, WINDOWHEIGHT/2); // right start location
+	vecArray[2] = sf::Vector2f(10, WINDOWHEIGHT / 2.f); // left 
+	vecArray[3] = sf::Vector2f(WINDOWWIDTH / 2.f, 10); // top start locations
+	vecArray[4] = sf::Vector2f(WINDOWWIDTH - 10, WINDOWHEIGHT / 2.f); // right start location
 	std::shared_ptr<ArenaBlockObject> _tempBlock;
 
 	for (int iter = 2; iter < 6; iter++)
@@ -53,7 +53,7 @@ void Game::CreateArena()
 
 void Game::CreatePaddle()
 {
-	std::shared_ptr<PaddleObject> _tempPaddle(new PaddleObject(sf::Vector2f(600,650), sf::Vector2f(140,12),sf::Color::White));
+	std::shared_ptr<PaddleObject> _tempPaddle(new PaddleObject(sf::Vector2f(600,650), sf::Vector2f(25,10),sf::Color::White));
 	m_GameObjectVector.push_back(_tempPaddle);
 
 }
@@ -73,17 +73,17 @@ void Game::Update(sf::RenderWindow &window)
 	case Game::GameState::STARTMENU:
 		break;
 	case Game::GameState::PLAYING:
-		m_GameObjectVector[2]->UpdatePosition(m_DeltaTime);
-		m_GameObjectVector[3]->UpdatePosition(localMouse);
+		m_GameObjectVector[BALL]->UpdatePosition(m_DeltaTime);
+		m_GameObjectVector[PADDLE]->UpdatePosition(localMouse);
 
 		for (int iter = 3; iter < 7; iter++)
 		{
 			if (m_GameObjectVector[iter] != NULL)
 			{
-				m_Collider.CheckCollision(&m_GameObjectVector[2]->GetBall(), &m_GameObjectVector[iter]->GetRectangle());
+				m_Collider.CheckCollision(&m_GameObjectVector[BALL]->GetBall(), &m_GameObjectVector[iter]->GetRectangle());
 			}
 		}
-		m_GameObjectVector[2]->UpdatePosition(m_Collider);
+		m_GameObjectVector[BALL]->UpdatePosition(m_Collider);
 		m_Collider.SetAllContactsFalse();
 		break;
 	case Game::GameState::ENDLEVEL:
@@ -128,7 +128,7 @@ void Game::Draw(sf::RenderWindow &window)
 		window.draw(m_GameObjectVector[1]->GetText());
 		break;
 	case GameState::PLAYING:
-		window.draw(m_GameObjectVector[2]->GetBall());
+		window.draw(m_GameObjectVector[BALL]->GetBall());
 		for (int iter = 3; iter < 7; iter++)
 		{
 			window.draw(m_GameObjectVector[iter]->GetRectangle());
@@ -146,7 +146,7 @@ void Game::Draw(sf::RenderWindow &window)
 
 sf::Vector2i Game::GetMousePosition(sf::RenderWindow & window)
 {
-	sf::Vector2i _windowBorderOffset = sf::Vector2i(8, 32);
+	sf::Vector2i _windowBorderOffset = sf::Vector2i(4, 28);
 	sf::Vector2i _globalMousePos = sf::Mouse::getPosition();
 	_globalMousePos -= window.getPosition();
 	_globalMousePos -= _windowBorderOffset;

@@ -9,7 +9,7 @@ BallObject::BallObject(sf::Vector2f pos, float radius, sf::Color color)
 	m_BallShape.setRadius(radius);
 	m_BallShape.setFillColor(color);
 	m_BallShape.setOrigin(sf::Vector2f(radius/2.f,radius/2.f));
-	m_Velocity = sf::Vector2f(-200, -100);
+	m_Velocity = sf::Vector2f(200, -200);
 }
 
 BallObject::~BallObject()
@@ -31,10 +31,6 @@ void BallObject::UpdatePosition(Collider& collider)
 	if (collider.GetContactTop() || collider.GetContactBottom())
 	{
 		m_Velocity.y *= -1;
-	}
-	if (collider.GetContactBottom())
-	{
-		m_Velocity += sf::Vector2f(2, 2);
 	}
 }
 
