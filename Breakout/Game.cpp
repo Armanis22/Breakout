@@ -14,6 +14,11 @@ void Game::Init()
 	CreateBall();
 	CreatePaddle();
 	CreateArena();
+
+	if (!m_Populater.LoadFromFile("Media/basiclevel.txt", sf::Vector2u(50, 20), m_GameObjectVector))
+		printf("Error Populating\n");
+	
+
 }
 
 Game::~Game()
@@ -53,7 +58,7 @@ void Game::CreateArena()
 
 void Game::CreatePaddle()
 {
-	std::shared_ptr<PaddleObject> _tempPaddle(new PaddleObject(sf::Vector2f(600,650), sf::Vector2f(25,10),sf::Color::White));
+	std::shared_ptr<PaddleObject> _tempPaddle(new PaddleObject(sf::Vector2f(600,650), sf::Vector2f(160,16),sf::Color::White));
 	m_GameObjectVector.push_back(_tempPaddle);
 
 }

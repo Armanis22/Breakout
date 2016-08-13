@@ -157,6 +157,8 @@
   <ItemGroup>
     <ClInclude Include="ArenaBlockObject.h" />
     <ClInclude Include="BallObject.h" />
+    <ClInclude Include="BlockObject.h" />
+    <ClInclude Include="BlockPopulate.h" />
     <ClInclude Include="Collider.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameObject.h" />
@@ -169,6 +171,8 @@
   <ItemGroup>
     <ClCompile Include="ArenaBlockObject.cpp" />
     <ClCompile Include="BallObject.cpp" />
+    <ClCompile Include="BlockObject.cpp" />
+    <ClCompile Include="BlockPopulate.cpp" />
     <ClCompile Include="Collider.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameObject.cpp" />

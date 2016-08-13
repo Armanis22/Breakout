@@ -9,6 +9,8 @@
 #include "BallObject.h"
 #include <string>
 #include "Collider.h"
+#include "BlockPopulate.h"
+#include <iostream>
 
 class Game
 {
@@ -22,6 +24,8 @@ public:
 	void CreatePaddle();
 	void Update(sf::RenderWindow &window);
 	void Draw(sf::RenderWindow &window);
+
+	BlockPopulate m_Populater;
 
 	//needed for pointer to window passing
 	sf::Vector2i GetMousePosition(sf::RenderWindow& window);

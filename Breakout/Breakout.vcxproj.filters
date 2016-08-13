@@ -48,6 +48,12 @@
     <ClInclude Include="GlobalConsts.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="BlockPopulate.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BlockObject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -75,6 +81,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Collider.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockPopulate.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BlockObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
