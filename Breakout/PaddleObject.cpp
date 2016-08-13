@@ -7,7 +7,7 @@ PaddleObject::PaddleObject(sf::Vector2f pos, sf::Vector2f size, sf::Color color)
 	m_Shape.setPosition(pos);
 	m_Shape.setSize(size);
 	m_Shape.setFillColor(color);
-	m_Shape.setOrigin(size / 2.f);
+	m_Shape.setOrigin(sf::Vector2f(size.x/2,size.y/2));
 }
 
 

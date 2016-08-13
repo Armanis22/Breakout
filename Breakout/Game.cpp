@@ -1,6 +1,5 @@
 #include "stdafx.h"
 #include "Game.h"
-#include "GameObject.h"
 
 Game::Game()
 {
@@ -38,14 +37,14 @@ void Game::CreateBall()
 void Game::CreateArena()
 {
 	sf::Vector2f vecArray[5];
-	vecArray[0] = sf::Vector2f(20, 750);  //vertical size
-	vecArray[1] = sf::Vector2f(1200, 20);  //horizontal size		  
-	vecArray[2] = sf::Vector2f(0, 0); // top and left start locations
-	vecArray[3] = sf::Vector2f(0, 0); // top and left start locations
-	vecArray[4] = sf::Vector2f(1180, 0); // right start location
+	vecArray[0] = sf::Vector2f(20, WINDOWHEIGHT);  //vertical size
+	vecArray[1] = sf::Vector2f(WINDOWWIDTH, 20);  //horizontal size		  
+	vecArray[2] = sf::Vector2f(10, WINDOWHEIGHT/2); // left 
+	vecArray[3] = sf::Vector2f(WINDOWWIDTH/2, 10); // top start locations
+	vecArray[4] = sf::Vector2f(WINDOWWIDTH-10, WINDOWHEIGHT/2); // right start location
 	std::shared_ptr<ArenaBlockObject> _tempBlock;
 
-	for (int iter = 2; iter < 5; iter++)
+	for (int iter = 2; iter < 6; iter++)
 	{
 		_tempBlock.reset(new ArenaBlockObject(vecArray[(iter % 2)], vecArray[iter], sf::Color(200,220,250)));
 		m_GameObjectVector.push_back(_tempBlock);
@@ -76,6 +75,16 @@ void Game::Update(sf::RenderWindow &window)
 	case Game::GameState::PLAYING:
 		m_GameObjectVector[2]->UpdatePosition(m_DeltaTime);
 		m_GameObjectVector[3]->UpdatePosition(localMouse);
+
+		for (int iter = 3; iter < 7; iter++)
+		{
+			if (m_GameObjectVector[iter] != NULL)
+			{
+				m_Collider.CheckCollision(&m_GameObjectVector[2]->GetBall(), &m_GameObjectVector[iter]->GetRectangle());
+			}
+		}
+		m_GameObjectVector[2]->UpdatePosition(m_Collider);
+		m_Collider.SetAllContactsFalse();
 		break;
 	case Game::GameState::ENDLEVEL:
 		break;
@@ -84,9 +93,6 @@ void Game::Update(sf::RenderWindow &window)
 	default:
 		break;
 	}
-
-
-
 }
 
 void Game::InputHandler(sf::RenderWindow &window)

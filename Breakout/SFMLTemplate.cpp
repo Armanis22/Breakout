@@ -3,11 +3,12 @@
 
 #include "stdafx.h"
 #include "Game.h"
+#include "GlobalConsts.h"
 
 
 int main()
 {
-	sf::RenderWindow window(sf::VideoMode(1200, 750), "Breakout!");
+	sf::RenderWindow window(sf::VideoMode(WINDOWWIDTH, WINDOWHEIGHT), "Breakout!");
 	window.setMouseCursorVisible(false);
 
 	Game myGame;

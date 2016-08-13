@@ -11,5 +11,8 @@ public:
 	sf::RectangleShape GetRectangle() { return m_Shape; }
 
 
+private:
+	sf::RectangleShape m_Shape;
+
 };
 

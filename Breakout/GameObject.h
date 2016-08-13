@@ -1,4 +1,7 @@
 #pragma once
+#include "GlobalConsts.h"
+#include "Collider.h"
+
 class GameObject
 {
 public:
@@ -11,6 +14,8 @@ public:
 	//tried using just the one update position for ball and paddle here. wouldnt work
 	virtual void UpdatePosition(sf::Time& deltaTime) {}
 	virtual void UpdatePosition(sf::Vector2i mousePos) {}
+	virtual void UpdatePosition(Collider& collider) {};
+
 	
 protected:
 	sf::Vector2f m_NewVelocity;

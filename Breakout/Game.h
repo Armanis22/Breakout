@@ -8,6 +8,7 @@
 #include "PaddleObject.h"
 #include "BallObject.h"
 #include <string>
+#include "Collider.h"
 
 class Game
 {
@@ -33,7 +34,8 @@ private:
 	sf::Time m_DeltaTime;
 	sf::Clock m_Clock;
 	sf::Vector2i localMouse;
-
+	Collider m_Collider;
+	
 	enum class GameState {
 		STARTMENU,
 		PLAYING,
