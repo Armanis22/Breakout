@@ -15,9 +15,8 @@ void Game::Init()
 	CreatePaddle();
 	CreateArena();
 
-	if (!m_Populater.LoadFromFile("Media/basiclevel.txt", sf::Vector2u(50, 20), m_GameObjectVector))
+	if (!m_Populater.LoadFromFile("Media/basiclevel.txt", sf::Vector2f(50, 20), m_GameObjectVector))
 		printf("Error Populating\n");
-	
 
 }
 
@@ -27,7 +26,7 @@ Game::~Game()
 
 void Game::CreateText()
 {
-	std::shared_ptr<TextObject> _tempText(new TextObject("BREAKOUT!", sf::Color::Red, sf::Vector2f(100, 100), 200));
+	std::shared_ptr<GameObject> _tempText(new TextObject("BREAKOUT!", sf::Color::Red, sf::Vector2f(100, 100), 200));
 	m_GameObjectVector.push_back(_tempText);
 	_tempText.reset(new TextObject("Press Spacebar to continue\n  Escape to exit anytime", sf::Color::Green, sf::Vector2f(175, 500), 60));
 	m_GameObjectVector.push_back(_tempText);
@@ -35,7 +34,7 @@ void Game::CreateText()
 
 void Game::CreateBall()
 {
-	std::shared_ptr<BallObject> _tempBall(new BallObject(sf::Vector2f(600, 620), 10.f, sf::Color::Red));
+	std::shared_ptr<GameObject> _tempBall(new BallObject(sf::Vector2f(600, 620), 10.f, sf::Color::Red));
 	m_GameObjectVector.push_back(_tempBall);
 }
 
@@ -47,7 +46,7 @@ void Game::CreateArena()
 	vecArray[2] = sf::Vector2f(10, WINDOWHEIGHT / 2.f); // left 
 	vecArray[3] = sf::Vector2f(WINDOWWIDTH / 2.f, 10); // top start locations
 	vecArray[4] = sf::Vector2f(WINDOWWIDTH - 10, WINDOWHEIGHT / 2.f); // right start location
-	std::shared_ptr<ArenaBlockObject> _tempBlock;
+	std::shared_ptr<GameObject> _tempBlock;
 
 	for (int iter = 2; iter < 6; iter++)
 	{
@@ -58,7 +57,7 @@ void Game::CreateArena()
 
 void Game::CreatePaddle()
 {
-	std::shared_ptr<PaddleObject> _tempPaddle(new PaddleObject(sf::Vector2f(600,650), sf::Vector2f(160,16),sf::Color::White));
+	std::shared_ptr<GameObject> _tempPaddle(new PaddleObject(sf::Vector2f(600,650), sf::Vector2f(160,16),sf::Color::White));
 	m_GameObjectVector.push_back(_tempPaddle);
 
 }
@@ -81,11 +80,15 @@ void Game::Update(sf::RenderWindow &window)
 		m_GameObjectVector[BALL]->UpdatePosition(m_DeltaTime);
 		m_GameObjectVector[PADDLE]->UpdatePosition(localMouse);
 
-		for (int iter = 3; iter < 7; iter++)
+		for (int iter = 3; iter < 228; iter++)
 		{
-			if (m_GameObjectVector[iter] != NULL)
+			if (m_GameObjectVector[iter] != nullptr)
 			{
-				m_Collider.CheckCollision(&m_GameObjectVector[BALL]->GetBall(), &m_GameObjectVector[iter]->GetRectangle());
+				bool _collide = m_Collider.CheckCollision(&m_GameObjectVector[BALL]->GetBall(), &m_GameObjectVector[iter]->GetRectangle());
+				if (iter > 7 && _collide)
+				{
+					m_GameObjectVector[iter] = nullptr;
+				}
 			}
 		}
 		m_GameObjectVector[BALL]->UpdatePosition(m_Collider);
@@ -134,8 +137,9 @@ void Game::Draw(sf::RenderWindow &window)
 		break;
 	case GameState::PLAYING:
 		window.draw(m_GameObjectVector[BALL]->GetBall());
-		for (int iter = 3; iter < 7; iter++)
+		for (int iter = 3; iter < 228; iter++)
 		{
+			if (m_GameObjectVector[iter] != nullptr)
 			window.draw(m_GameObjectVector[iter]->GetRectangle());
 		}
 		break;
