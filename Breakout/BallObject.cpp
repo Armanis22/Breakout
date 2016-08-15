@@ -18,7 +18,7 @@ BallObject::~BallObject()
 
 void BallObject::UpdatePosition(sf::Time& deltaTime)
 {
-	m_Velocity += m_NewVelocity;
+	//m_Velocity = m_NewVelocity;
 	m_BallShape.move(m_Velocity * deltaTime.asSeconds());
 }
 
@@ -33,7 +33,7 @@ void BallObject::UpdatePosition(Collider& collider)
 	if (collider.GetContactTop() || collider.GetContactBottom())
 	{
 		if (collider.GetContactBottom())
-			m_BallShape.move(0, -4);
+			m_BallShape.move(0, -14);
 		m_Velocity.y *= -1;
 	}
 }
@@ -51,6 +51,26 @@ void BallObject::PaddleHit(sf::Vector2f paddlePos)
 {
 	//get the different between the ball origin and paddle origin
 	//calculate new vector based off of old vecter and the difference of the positions
-	m_Velocity *= 1.03f;
+	
+	m_Velocity *= 1.01f;
+	//m_BallShape.move(0, -3);
+	float _intersectX = m_BallShape.getPosition().x - paddlePos.x;
+	
+	//this kinda works might come back to it
+	double _magnitude = sqrt((m_Velocity.x * m_Velocity.x) + (m_Velocity.y * m_Velocity.y));
+	//float _newX = cos(_intersectX) * _magnitude;
+	//float _newY = sin(_intersectX) * _magnitude;
+	//printf("mag %f\n", _intersectX);
+	//m_Velocity = sf::Vector2f(_newX, _newY);
+
+	// normalize the intersect point
+	float _normalizedAngle = _intersectX / 80;
+	//get the new angle by multiplying by the max angle i want of 65
+	float _newAngle = _normalizedAngle * 45;
+	float _newX = cos(abs(_newAngle)) * _magnitude;
+	float _newY = sin(abs(_newAngle)) * _magnitude;
+	m_Velocity = sf::Vector2f(_newX, _newY);
+	//printf("mag %f\n", _normalizedAngle);
+
 }
 

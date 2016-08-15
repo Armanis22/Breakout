@@ -92,19 +92,21 @@ void Game::Update(sf::RenderWindow &window)
 		{
 			if (m_GameObjectVector[iter] != nullptr)
 			{
-				bool _collide = m_Collider.CheckCollision(&m_GameObjectVector[BALL]->GetBall(), &m_GameObjectVector[iter]->GetRectangle());				
-				if (iter == PADDLE && _collide)
+				n_Collision = m_Collider.CheckCollision(&m_GameObjectVector[BALL]->GetBall(), &m_GameObjectVector[iter]->GetRectangle());				
+				/*if (iter == PADDLE && n_Collision)
 				{
 					m_GameObjectVector[BALL]->PaddleHit(m_GameObjectVector[PADDLE]->GetRectangle().getPosition());
-				}
-				if (iter > 7 && _collide)
+				}*/
+				if (iter > 7 && n_Collision)
 				{
 					m_GameObjectVector[iter] = nullptr;
 				}
 			}
 		}
-		m_GameObjectVector[BALL]->UpdatePosition(m_Collider);	
+		if (!n_Collision)
+			m_GameObjectVector[BALL]->UpdatePosition(m_Collider);	
 		m_Collider.SetAllContactsFalse();
+		n_Collision = false;
 		break;
 	case Game::GameState::ENDLEVEL:
 		break;

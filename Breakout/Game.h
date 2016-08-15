@@ -39,6 +39,7 @@ private:
 	sf::Clock m_Clock;
 	sf::Vector2i localMouse;
 	Collider m_Collider;
+	bool n_Collision;
 
 	enum class GameState {
 		STARTMENU,
