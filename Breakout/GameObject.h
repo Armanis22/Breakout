@@ -13,8 +13,11 @@ public:
 	virtual sf::CircleShape GetBall() { return m_BallShape; }
 	//tried using just the one update position for ball and paddle here. wouldnt work
 	virtual void UpdatePosition(sf::Time& deltaTime) {}
+	virtual void UpdatePosition(sf::Vector2f newPosition) {}
 	virtual void UpdatePosition(sf::Vector2i mousePos) {}
 	virtual void UpdatePosition(Collider& collider) {};
+	virtual void PaddleHit(sf::Vector2f) {};
+
 
 	
 protected:

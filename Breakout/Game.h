@@ -39,9 +39,10 @@ private:
 	sf::Clock m_Clock;
 	sf::Vector2i localMouse;
 	Collider m_Collider;
-	
+
 	enum class GameState {
 		STARTMENU,
+		PREPLAYING,
 		PLAYING,
 		ENDLEVEL,
 		GAMEOVER

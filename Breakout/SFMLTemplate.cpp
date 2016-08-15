@@ -10,6 +10,7 @@ int main()
 {
 	sf::RenderWindow window(sf::VideoMode(WINDOWWIDTH, WINDOWHEIGHT), "Breakout!");
 	window.setMouseCursorVisible(false);
+	//window.setFramerateLimit(120);
 
 	Game myGame;
 	while (window.isOpen())

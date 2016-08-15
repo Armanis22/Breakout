@@ -26,11 +26,31 @@ void BallObject::UpdatePosition(Collider& collider)
 {
 	if (collider.GetContactLeft() || collider.GetContactRight())
 	{
+		if (collider.GetContactRight())
+			m_BallShape.move(-4, 0);
 		m_Velocity.x *= -1;
 	}
 	if (collider.GetContactTop() || collider.GetContactBottom())
 	{
+		if (collider.GetContactBottom())
+			m_BallShape.move(0, -4);
 		m_Velocity.y *= -1;
 	}
+}
+void BallObject::UpdatePosition(sf::Vector2i mousePos)
+{
+	mousePos.y = m_BallShape.getPosition().y;
+	m_BallShape.setPosition(static_cast<sf::Vector2f>(mousePos));
+	if (m_BallShape.getPosition().x < 100)
+		m_BallShape.setPosition(100, mousePos.y);
+	if (m_BallShape.getPosition().x > 1100)
+		m_BallShape.setPosition(1100, mousePos.y);
+}
+
+void BallObject::PaddleHit(sf::Vector2f paddlePos)
+{
+	//get the different between the ball origin and paddle origin
+	//calculate new vector based off of old vecter and the difference of the positions
+	m_Velocity *= 1.03f;
 }
 
