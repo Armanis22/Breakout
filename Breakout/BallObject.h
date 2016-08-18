@@ -12,6 +12,8 @@ public:
 	virtual sf::CircleShape GetBall() { return m_BallShape; }
 	void UpdatePosition(sf::Time& deltaTime);
 	void UpdatePosition(Collider& collider);
+	void UpdatePosition(sf::Vector2i mousePos);
+
 
 private:
 	sf::CircleShape m_BallShape;

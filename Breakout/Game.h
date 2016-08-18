@@ -42,6 +42,7 @@ private:
 	
 	enum class GameState {
 		STARTMENU,
+		PREPLAYING,
 		PLAYING,
 		ENDLEVEL,
 		GAMEOVER

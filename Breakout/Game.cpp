@@ -76,6 +76,11 @@ void Game::Update(sf::RenderWindow &window)
 	{
 	case Game::GameState::STARTMENU:
 		break;
+	case Game::GameState::PREPLAYING:
+		m_GameObjectVector[PADDLE]->UpdatePosition(localMouse);
+		m_GameObjectVector[BALL]->UpdatePosition(localMouse);
+
+		break;
 	case Game::GameState::PLAYING:
 		m_GameObjectVector[BALL]->UpdatePosition(m_DeltaTime);
 		m_GameObjectVector[PADDLE]->UpdatePosition(localMouse);
@@ -114,7 +119,13 @@ void Game::InputHandler(sf::RenderWindow &window)
 	{
 	case GameState::STARTMENU:
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+			m_GameState = GameState::PREPLAYING;
+		break;
+	case GameState::PREPLAYING:
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
 			m_GameState = GameState::PLAYING;
+		}
 		break;
 	case GameState::PLAYING:
 		break;
@@ -134,6 +145,14 @@ void Game::Draw(sf::RenderWindow &window)
 	case GameState::STARTMENU:
 		window.draw(m_GameObjectVector[0]->GetText());
 		window.draw(m_GameObjectVector[1]->GetText());
+		break;
+	case GameState::PREPLAYING:
+		window.draw(m_GameObjectVector[BALL]->GetBall());
+		for (int iter = 3; iter < 228; iter++)
+		{
+			if (m_GameObjectVector[iter] != nullptr)
+				window.draw(m_GameObjectVector[iter]->GetRectangle());
+		}
 		break;
 	case GameState::PLAYING:
 		window.draw(m_GameObjectVector[BALL]->GetBall());
