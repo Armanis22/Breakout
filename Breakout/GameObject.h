@@ -15,6 +15,7 @@ public:
 	virtual void UpdatePosition(sf::Time& deltaTime) {}
 	virtual void UpdatePosition(sf::Vector2i mousePos) {}
 	virtual void UpdatePosition(Collider& collider) {};
+	virtual void PaddleHit(sf::Vector2f paddlePos) {};
 
 	
 protected:

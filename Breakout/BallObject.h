@@ -13,7 +13,7 @@ public:
 	void UpdatePosition(sf::Time& deltaTime);
 	void UpdatePosition(Collider& collider);
 	void UpdatePosition(sf::Vector2i mousePos);
-
+	virtual void PaddleHit(sf::Vector2f paddlePos);
 
 private:
 	sf::CircleShape m_BallShape;

@@ -25,7 +25,7 @@ void BallObject::UpdatePosition(sf::Time& deltaTime)
 void BallObject::UpdatePosition(Collider& collider)
 {
 	if (collider.GetContactLeft() || collider.GetContactRight())
-	{
+	{ 
 		if (collider.GetContactRight())
 			m_BallShape.move(-4, 0);
 		m_Velocity.x *= -1;
@@ -46,5 +46,16 @@ void BallObject::UpdatePosition(sf::Vector2i mousePos)
 		m_BallShape.setPosition(100, mousePos.y);
 	if (m_BallShape.getPosition().x > 1100)
 		m_BallShape.setPosition(1100, mousePos.y);
+}
+
+void BallObject::PaddleHit(sf::Vector2f paddlePos)
+{
+	double _magnitude = sqrtf((m_Velocity.x * m_Velocity.x) + (m_Velocity.y * m_Velocity.y));
+	float _differenceX = m_BallShape.getPosition().x - paddlePos.x;
+	// get normalized by dividing the difference between half the paddle length
+	float _normalizeAngle = _differenceX / 80;
+
+	printf("normalized: %f\n", _normalizeAngle);
+	m_Velocity.y *= -1;
 }
 

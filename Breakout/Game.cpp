@@ -94,9 +94,20 @@ void Game::Update(sf::RenderWindow &window)
 				{
 					m_GameObjectVector[iter] = nullptr;
 				}
+				else if (iter == PADDLE && _collide)
+				{
+					m_Collider.SetContactPaddle(true);
+				}
 			}
 		}
-		m_GameObjectVector[BALL]->UpdatePosition(m_Collider);
+		if (m_Collider.GetContactPaddle())
+		{
+			m_GameObjectVector[BALL]->PaddleHit(m_GameObjectVector[PADDLE]->GetRectangle().getPosition());
+		}
+		else
+		{
+			m_GameObjectVector[BALL]->UpdatePosition(m_Collider);
+		}
 		m_Collider.SetAllContactsFalse();
 		break;
 	case Game::GameState::ENDLEVEL:
