@@ -82,7 +82,6 @@ void Game::Update(sf::RenderWindow &window)
 		{
 			m_GameState = GameState::PLAYING;
 		}
-
 		break;
 	case Game::GameState::PLAYING:
 		m_GameObjectVector[BALL]->UpdatePosition(m_DeltaTime);
@@ -92,19 +91,29 @@ void Game::Update(sf::RenderWindow &window)
 		{
 			if (m_GameObjectVector[iter] != nullptr)
 			{
-				n_Collision = m_Collider.CheckCollision(&m_GameObjectVector[BALL]->GetBall(), &m_GameObjectVector[iter]->GetRectangle());				
+				bool _collide = m_Collider.CheckCollision(&m_GameObjectVector[BALL]->GetBall(), &m_GameObjectVector[iter]->GetRectangle());				
 				/*if (iter == PADDLE && n_Collision)
 				{
 					m_GameObjectVector[BALL]->PaddleHit(m_GameObjectVector[PADDLE]->GetRectangle().getPosition());
 				}*/
-				if (iter > 7 && n_Collision)
+				if (iter > 7 && _collide)
 				{
 					m_GameObjectVector[iter] = nullptr;
 				}
+				else if (iter == PADDLE && _collide)
+				{
+					m_Collider.SetContactPaddle(true);
+				}
 			}
 		}
-		if (!n_Collision)
-			m_GameObjectVector[BALL]->UpdatePosition(m_Collider);	
+		if (m_Collider.GetContactPaddle())
+		{
+			m_GameObjectVector[BALL]->PaddleHit(m_GameObjectVector[PADDLE]->GetRectangle().getPosition());
+		}
+		else
+		{
+			m_GameObjectVector[BALL]->UpdatePosition(m_Collider);
+		}
 		m_Collider.SetAllContactsFalse();
 		n_Collision = false;
 		break;
@@ -131,6 +140,10 @@ void Game::InputHandler(sf::RenderWindow &window)
 			m_GameState = GameState::PREPLAYING;
 		break;
 	case GameState::PREPLAYING:
+		if (sf::Mouse::isButtonPressed(sf::Mouse::Left))
+		{
+			m_GameState = GameState::PLAYING;
+		}
 		break;
 	case GameState::PLAYING:
 		break;

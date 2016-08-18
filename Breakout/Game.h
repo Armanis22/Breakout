@@ -30,7 +30,6 @@ public:
 	//needed for pointer to window passing
 	sf::Vector2i GetMousePosition(sf::RenderWindow& window);
 
-
 private:
 	void InputHandler(sf::RenderWindow &window);
 	std::vector<std::shared_ptr<GameObject>> m_GameObjectVector;

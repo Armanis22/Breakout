@@ -16,9 +16,7 @@ public:
 	virtual void UpdatePosition(sf::Vector2f newPosition) {}
 	virtual void UpdatePosition(sf::Vector2i mousePos) {}
 	virtual void UpdatePosition(Collider& collider) {};
-	virtual void PaddleHit(sf::Vector2f) {};
-
-
+	virtual void PaddleHit(sf::Vector2f paddlePos) {};
 	
 protected:
 	sf::Vector2f m_NewVelocity;

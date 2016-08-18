@@ -18,7 +18,7 @@ public:
 
 private:
 	sf::CircleShape m_BallShape;
-
+	sf::Vector2f m_Velocity;
 
 };
 
