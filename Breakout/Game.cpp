@@ -9,14 +9,7 @@ Game::Game()
 void Game::Init()
 {
 	GameState m_GameState = GameState::STARTMENU;
-	CreateText();
-	CreateBall();
-	CreatePaddle();
-	CreateArena();
-
-	if (!m_Populater.LoadFromFile("Media/basiclevel.txt", sf::Vector2f(50, 20), m_GameObjectVector))
-		printf("Error Populating\n");
-
+	
 }
 
 Game::~Game()
@@ -31,6 +24,15 @@ void Game::CreateText()
 	m_GameObjectVector.push_back(_tempText);
 }
 
+void Game::CreateLives()
+{	
+	for (int i = 1150; i > 1001; i -= 50)
+	{
+		std::shared_ptr<GameObject> _tempBall(new BallObject(sf::Vector2f(i, 700), 10.f, sf::Color::Red));
+		m_GameObjectVector.push_back(_tempBall);
+	}
+}
+
 void Game::CreateBall()
 {
 	std::shared_ptr<GameObject> _tempBall(new BallObject(sf::Vector2f(600, 625), 10.f, sf::Color::Red));
@@ -40,8 +42,8 @@ void Game::CreateBall()
 void Game::CreateArena()
 {
 	sf::Vector2f vecArray[5];
-	vecArray[0] = sf::Vector2f(20, WINDOWHEIGHT + 100);  //vertical size
-	vecArray[1] = sf::Vector2f(WINDOWWIDTH + 100, 20);  //horizontal size		  
+	vecArray[0] = sf::Vector2f(20, WINDOWHEIGHT + 200);  //vertical size
+	vecArray[1] = sf::Vector2f(WINDOWWIDTH + 200, 20);  //horizontal size		  
 	vecArray[2] = sf::Vector2f(10, WINDOWHEIGHT / 2.f); // left 
 	vecArray[3] = sf::Vector2f(WINDOWWIDTH / 2.f, 10); // top start locations
 	vecArray[4] = sf::Vector2f(WINDOWWIDTH - 10, WINDOWHEIGHT / 2.f); // right start location
@@ -74,7 +76,18 @@ void Game::Update(sf::RenderWindow &window)
 	switch (m_GameState)
 	{
 	case Game::GameState::STARTMENU:
-		break;
+		if (!m_GameObjectVector.empty())
+		{
+			m_GameObjectVector.clear();
+		}
+		CreateText();
+		CreateLives();
+		CreateBall();
+		CreatePaddle();
+		CreateArena();
+		m_CurrentLevel = 1;
+		m_Lives = 3;
+		LoadLevel();		break;
 	case Game::GameState::PREPLAYING:
 		m_GameObjectVector[PADDLE]->UpdatePosition(localMouse);
 		m_GameObjectVector[BALL]->UpdatePosition(localMouse);
@@ -86,22 +99,33 @@ void Game::Update(sf::RenderWindow &window)
 	case Game::GameState::PLAYING:
 		m_GameObjectVector[BALL]->UpdatePosition(m_DeltaTime);
 		m_GameObjectVector[PADDLE]->UpdatePosition(localMouse);
-		
-		for (int iter = 3; iter < 228; iter++)
+
+		for (int iter = PADDLE; iter < MAXOBJECTS; iter++)
 		{
 			if (m_GameObjectVector[iter] != nullptr)
 			{
-				bool _collide = m_Collider.CheckCollision(&m_GameObjectVector[BALL]->GetBall(), &m_GameObjectVector[iter]->GetRectangle());				
-				if (iter > 7 && _collide)
+				n_Collision = m_Collider.CheckCollision(&m_GameObjectVector[BALL]->GetBall(), &m_GameObjectVector[iter]->GetRectangle());				
+				if (iter > FIRSTBREAKBLOCK && n_Collision)
 				{
 					m_GameObjectVector[iter] = nullptr;
 				}
-				else if (iter == PADDLE && _collide)
+				else if (iter == PADDLE && n_Collision)
 				{
 					m_Collider.SetContactPaddle(true);
 				}
 			}
+			else
+			{
+				m_NullCount++;
+				if (m_NullCount == 220)
+				{
+					m_GameObjectVector.resize(11);
+					m_CurrentLevel++;
+					m_GameState = GameState::ENDLEVEL;
+				}
+			}
 		}
+		m_NullCount = 0;
 		if (m_Collider.GetContactPaddle())
 		{
 			m_GameObjectVector[BALL]->PaddleHit(m_GameObjectVector[PADDLE]->GetRectangle().getPosition());
@@ -112,8 +136,23 @@ void Game::Update(sf::RenderWindow &window)
 		}
 		m_Collider.SetAllContactsFalse();
 		n_Collision = false;
+		if (m_GameObjectVector[BALL]->GetBall().getPosition().y > 750)
+		{
+			m_Lives--;
+			m_GameObjectVector[m_Lives + 2] = nullptr;
+			if (m_Lives > 0)
+			{
+				m_GameState = GameState::PREPLAYING;
+			}
+			else
+			{
+				m_GameState = GameState::GAMEOVER;
+			}
+		}
 		break;
 	case Game::GameState::ENDLEVEL:
+		printf("vector size: %d\n", m_CurrentLevel);
+		LoadLevel();
 		break;
 	case Game::GameState::GAMEOVER:
 		break;
@@ -144,8 +183,16 @@ void Game::InputHandler(sf::RenderWindow &window)
 	case GameState::PLAYING:
 		break;
 	case GameState::ENDLEVEL:
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			m_GameState = GameState::PREPLAYING;
+		}
 		break;
 	case GameState::GAMEOVER:
+		if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+		{
+			m_GameState = GameState::STARTMENU;
+		}
 		break;
 	default:
 		break;
@@ -157,33 +204,88 @@ void Game::Draw(sf::RenderWindow &window)
 	switch (m_GameState)
 	{
 	case GameState::STARTMENU:
-		window.draw(m_GameObjectVector[0]->GetText());
-		window.draw(m_GameObjectVector[1]->GetText());
+		window.draw(m_GameObjectVector[BREAKOUT]->GetText());
+		window.draw(m_GameObjectVector[CONTINUE]->GetText());
 		break;
 	case GameState::PREPLAYING:
-		window.draw(m_GameObjectVector[BALL]->GetBall());
-		for (int iter = 3; iter < 228; iter++)
-		{
-			if (m_GameObjectVector[iter] != nullptr)
-				window.draw(m_GameObjectVector[iter]->GetRectangle());
-		}
+		DrawAll(window);
 		break;
 	case GameState::PLAYING:
-		window.draw(m_GameObjectVector[BALL]->GetBall());
-		for (int iter = 3; iter < 228; iter++)
-		{
-			if (m_GameObjectVector[iter] != nullptr)
-			window.draw(m_GameObjectVector[iter]->GetRectangle());
-		}
+		DrawAll(window);
 		break;
 	case GameState::ENDLEVEL:
+		DrawBasic(window);
+		window.draw(m_GameObjectVector[CONTINUE]->GetText());
 		break;
 	case GameState::GAMEOVER:
+		DrawBasic(window);
+		window.draw(m_GameObjectVector[BREAKOUT]->GetText());
+		window.draw(m_GameObjectVector[CONTINUE]->GetText());
+		break;
 		break;
 	default:
 		break;
 	}
 	window.display();
+}
+
+void Game::DrawBasic(sf::RenderWindow &window)
+{
+	for (int iter = LIFEONE; iter < PADDLE; iter++)
+	{
+		if (m_GameObjectVector[iter] != nullptr)
+		{
+			window.draw(m_GameObjectVector[iter]->GetBall());
+		}
+	}
+	for (int iter = PADDLE; iter < FIRSTBREAKBLOCK; iter++)
+	{
+		if (m_GameObjectVector[iter] != nullptr)
+			window.draw(m_GameObjectVector[iter]->GetRectangle());
+	}
+}
+
+void Game::DrawAll(sf::RenderWindow & window)
+{
+	for (int iter = LIFEONE; iter < PADDLE; iter++)
+	{
+		if (m_GameObjectVector[iter] != nullptr)
+		{
+			window.draw(m_GameObjectVector[iter]->GetBall());
+		}
+	}
+	for (int iter = PADDLE; iter < MAXOBJECTS; iter++)
+	{
+		if (m_GameObjectVector[iter] != nullptr)
+			window.draw(m_GameObjectVector[iter]->GetRectangle());
+	}
+}
+
+void Game::LoadLevel()
+{
+	switch (m_CurrentLevel)
+	{
+	case 1:
+		if (!m_Populater.LoadFromFile("Media/basiclevel.txt", sf::Vector2f(50, 20), m_GameObjectVector))
+			printf("Error Populating\n");
+		break;
+	case 2:
+		if (!m_Populater.LoadFromFile("Media/basiclevel.txt", sf::Vector2f(50, 20), m_GameObjectVector))
+			printf("Error Populating\n");
+		break;
+	case 3:
+		if (!m_Populater.LoadFromFile("Media/basiclevel.txt", sf::Vector2f(50, 20), m_GameObjectVector))
+			printf("Error Populating\n");
+		break;
+	case 4:
+		m_GameState = GameState::STARTMENU;
+		m_CurrentLevel = 1;
+		if (!m_Populater.LoadFromFile("Media/basiclevel.txt", sf::Vector2f(50, 20), m_GameObjectVector))
+			printf("Error Populating\n");
+		break;
+	default:
+		break;
+	}
 }
 
 sf::Vector2i Game::GetMousePosition(sf::RenderWindow & window)
@@ -193,7 +295,6 @@ sf::Vector2i Game::GetMousePosition(sf::RenderWindow & window)
 	_globalMousePos -= window.getPosition();
 	_globalMousePos -= _windowBorderOffset;
 	return _globalMousePos;
-
 }
 
 

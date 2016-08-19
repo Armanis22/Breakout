@@ -19,11 +19,15 @@ public:
 	void Init();
 	~Game();
 	void CreateText();
+	void CreateLives();
 	void CreateBall();
 	void CreateArena();
 	void CreatePaddle();
 	void Update(sf::RenderWindow &window);
 	void Draw(sf::RenderWindow &window);
+	void DrawBasic(sf::RenderWindow &window);
+	void DrawAll(sf::RenderWindow &window);
+	void LoadLevel();
 
 	BlockPopulate m_Populater;
 
@@ -39,6 +43,10 @@ private:
 	sf::Vector2i localMouse;
 	Collider m_Collider;
 	bool n_Collision;
+	
+	int m_NullCount;
+	int m_CurrentLevel;
+	int m_Lives;
 
 	enum class GameState {
 		STARTMENU,
