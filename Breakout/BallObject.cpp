@@ -36,8 +36,6 @@ void BallObject::UpdatePosition(Collider& collider)
 	{
 		if (collider.GetContactBottom())
 			m_BallShape.move(0, -6);
-		else
-			m_BallShape.move(0, 1);
 		m_Velocity.y *= -1;
 	}
 }

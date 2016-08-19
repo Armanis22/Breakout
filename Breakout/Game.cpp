@@ -40,8 +40,8 @@ void Game::CreateBall()
 void Game::CreateArena()
 {
 	sf::Vector2f vecArray[5];
-	vecArray[0] = sf::Vector2f(20, WINDOWHEIGHT);  //vertical size
-	vecArray[1] = sf::Vector2f(WINDOWWIDTH, 20);  //horizontal size		  
+	vecArray[0] = sf::Vector2f(20, WINDOWHEIGHT + 100);  //vertical size
+	vecArray[1] = sf::Vector2f(WINDOWWIDTH + 100, 20);  //horizontal size		  
 	vecArray[2] = sf::Vector2f(10, WINDOWHEIGHT / 2.f); // left 
 	vecArray[3] = sf::Vector2f(WINDOWWIDTH / 2.f, 10); // top start locations
 	vecArray[4] = sf::Vector2f(WINDOWWIDTH - 10, WINDOWHEIGHT / 2.f); // right start location
@@ -92,10 +92,6 @@ void Game::Update(sf::RenderWindow &window)
 			if (m_GameObjectVector[iter] != nullptr)
 			{
 				bool _collide = m_Collider.CheckCollision(&m_GameObjectVector[BALL]->GetBall(), &m_GameObjectVector[iter]->GetRectangle());				
-				/*if (iter == PADDLE && n_Collision)
-				{
-					m_GameObjectVector[BALL]->PaddleHit(m_GameObjectVector[PADDLE]->GetRectangle().getPosition());
-				}*/
 				if (iter > 7 && _collide)
 				{
 					m_GameObjectVector[iter] = nullptr;
