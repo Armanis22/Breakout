@@ -151,7 +151,6 @@ void Game::Update(sf::RenderWindow &window)
 		}
 		break;
 	case Game::GameState::ENDLEVEL:
-		printf("vector size: %d\n", m_CurrentLevel);
 		LoadLevel();
 		break;
 	case Game::GameState::GAMEOVER:
@@ -266,15 +265,15 @@ void Game::LoadLevel()
 	switch (m_CurrentLevel)
 	{
 	case 1:
-		if (!m_Populater.LoadFromFile("Media/basiclevel.txt", sf::Vector2f(50, 20), m_GameObjectVector))
+		if (!m_Populater.LoadFromFile("Media/level3.txt", sf::Vector2f(50, 30), m_GameObjectVector))
 			printf("Error Populating\n");
 		break;
 	case 2:
-		if (!m_Populater.LoadFromFile("Media/basiclevel.txt", sf::Vector2f(50, 20), m_GameObjectVector))
+		if (!m_Populater.LoadFromFile("Media/level1.txt", sf::Vector2f(50, 30), m_GameObjectVector))
 			printf("Error Populating\n");
 		break;
 	case 3:
-		if (!m_Populater.LoadFromFile("Media/basiclevel.txt", sf::Vector2f(50, 20), m_GameObjectVector))
+		if (!m_Populater.LoadFromFile("Media/level2.txt", sf::Vector2f(50, 30), m_GameObjectVector))
 			printf("Error Populating\n");
 		break;
 	case 4:

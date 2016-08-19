@@ -22,6 +22,8 @@ void BallObject::UpdatePosition(sf::Time& deltaTime)
 
 void BallObject::UpdatePosition(Collider& collider)
 {
+	//reverse velocities and add a little bit of pushout
+	//right and bottom needed more pushout. collision issues causing ball to get stuck inside
 	if (collider.GetContactLeft() || collider.GetContactRight())
 	{ 
 		if (collider.GetContactRight())
@@ -42,7 +44,7 @@ void BallObject::UpdatePosition(Collider& collider)
 void BallObject::UpdatePosition(sf::Vector2i mousePos)
 {
 	mousePos.y = 628;
-	m_Velocity = sf::Vector2f(200, -200);
+	m_Velocity = sf::Vector2f(300, -300);
 	m_BallShape.setPosition(static_cast<sf::Vector2f>(mousePos));
 	if (m_BallShape.getPosition().x < 100)
 		m_BallShape.setPosition(100, mousePos.y);
@@ -58,6 +60,14 @@ void BallObject::PaddleHit(sf::Vector2f paddlePos)
 	float _normalized = _differenceX / 80;
 	//multiply normalized by the max angle to get new angle
 	float _newAngle = _normalized * 85;
+	//minimum angle set to 15 degrees
+	if (_newAngle > -15 && _newAngle < 15)
+	{
+		if (_newAngle < 0)
+			_newAngle = -15;
+		else
+			_newAngle = 15;
+	}
 	//trig from angle to get new x,y values
 	//finally worked when i changed the angle to radians in the parenthesis
 	float _newY = cosf(_newAngle * PI / 180) * _magnitude;
