@@ -59,7 +59,7 @@ void BallObject::PaddleHit(sf::Vector2f paddlePos)
 	// get normalized by dividing the difference between half the paddle length
 	float _normalized = _differenceX / 80;
 	//multiply normalized by the max angle to get new angle
-	float _newAngle = _normalized * 85;
+	float _newAngle = _normalized * 75;
 	//minimum angle set to 15 degrees
 	if (_newAngle > -15 && _newAngle < 15)
 	{
